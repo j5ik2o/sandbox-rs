@@ -158,6 +158,7 @@ fn main() {
   let values = (1..=15).into_iter().collect::<Vec<_>>();
   let node = Node::from_vec(values);
   println!("node = {:?}", node);
+  println!("node.size() = {}", node.size());
   println!("max = {}", node.max());
   println!("min = {}", node.min());
   println!("find(6) = {:?}", node.find(|| 6).unwrap());
