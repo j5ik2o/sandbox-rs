@@ -86,19 +86,16 @@ where
     }
   }
 
-  pub fn find<F>(&'a self, mut value: F) -> Option<&'a Node<T>>
-  where
-    F: FnMut() -> T,
-  {
+  pub fn find(&'a self, value: T) -> Option<&'a Node<T>> {
     match self {
-      Node::Leaf { value: v } if *v == value() => Some(self),
-      Node::Branch { value: v, .. } if *v == value() => Some(self),
+      Node::Leaf { value: v } if *v == value => Some(self),
+      Node::Branch { value: v, .. } if *v == value => Some(self),
       Node::Branch {
         value: v, left: l, ..
-      } if value() < *v => l.find(value),
+      } if value < *v => l.find(value),
       Node::Branch {
         value: v, right: r, ..
-      } if value() > *v => r.find(value),
+      } if value > *v => r.find(value),
       _ => None,
     }
   }
@@ -159,7 +156,8 @@ fn main() {
   let node = Node::from_vec(values);
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
+  println!("find(6) = {:?}", node.find(6).unwrap());
+  println!("max = {}", node.max());
   println!("max = {}", node.max());
   println!("min = {}", node.min());
-  println!("find(6) = {:?}", node.find(|| 6).unwrap());
 }
