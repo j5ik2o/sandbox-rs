@@ -124,7 +124,7 @@ where
     }
   }
 
-  // 値を読みたいだけなら通常はこれでよい。
+  // (1) 値を読みたいだけなら通常はこれでよい。
   // 実体が欲しいなら呼び出し先が必要に応じてcloneを呼び出す
   pub fn as_value(&self) -> &T {
     match self {
@@ -133,7 +133,8 @@ where
     }
   }
 
-  // 効率が悪い実装。cloneはできるだけ遅延させるべき
+  // (2) 効率が悪い実装。
+  // cloneするかどうかは呼び出し側で決める。できるだけ遅延させよう。
   pub fn to_value_clone(&self) -> T {
     match self {
       Node::Leaf { value } => value.clone(),
@@ -141,7 +142,9 @@ where
     }
   }
 
-  // 複製コストがないが他の属性がこの操作以後は読めなくなる…。
+  // (3) 複製コストがないが、selfの所有権を奪っているのでこの関数の終了と共に破棄される。
+  // つまり、Tだけで取り出して、他の属性を捨てることになる。
+  // valueを読んだあと他の属性が読めなくなるのは使い勝手が悪い
   pub fn to_value_move1(self) -> T {
     match self {
       Node::Leaf { value } => value,
@@ -149,7 +152,7 @@ where
     }
   }
 
-  // 現状の仕様では、コンパイルできない実装
+  // (4) 現状の仕様では、コンパイルできない実装
   // pub fn to_value_move2(self) -> &T {
   //   match self {
   //     Node::Leaf { value } => &value,
