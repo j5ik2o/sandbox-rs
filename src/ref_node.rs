@@ -149,7 +149,7 @@ where
   }
 
   // (4) 実体版と違ってコンパイル可能だが、無駄なself消費。
-  pub fn to_value_move2(self) -> &'a T {
+  pub fn as_value_move2(self) -> &'a T {
     match self {
       RefNode::Leaf { value } => value,
       RefNode::Branch { value, .. } => value,

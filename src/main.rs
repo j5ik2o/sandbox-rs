@@ -17,7 +17,7 @@ impl std::fmt::Display for Value {
 
 fn main() {
   let values = (1..=15).into_iter().map(|e| Value(e)).collect::<Vec<_>>();
-  let node = Node::from_vec(values);
+  let node = Node::from_vec(&values);
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
   println!("find(6) = {:?}", node.find(Value(6)).unwrap());

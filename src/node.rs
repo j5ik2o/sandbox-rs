@@ -62,7 +62,7 @@ impl<'a, T: Clone> Node<T>
 where
   T: PartialOrd + 'a,
 {
-  pub fn from_vec(values: Vec<T>) -> Node<T> {
+  pub fn from_vec(values: &[T]) -> Node<T> {
     if values.len() == 1 {
       Self::of_leaf(values[0].clone())
     } else {
@@ -70,9 +70,9 @@ where
       let (left, right) = values.split_at(len);
       let (head, tail) = right.split_first().unwrap();
       Self::of_branch(
-        Self::from_vec(left.to_vec()),
+        Self::from_vec(left),
         head.clone(),
-        Self::from_vec(tail.to_vec()),
+        Self::from_vec(tail),
       )
     }
   }
@@ -154,7 +154,7 @@ where
   }
 
   // (4) 現状の仕様では、コンパイルできない実装
-  // pub fn to_value_move2(self) -> &T {
+  // pub fn as_value_move2(self) -> &T {
   //   match self {
   //     Node::Leaf { value } => &value,
   //     Node::Branch { value, .. } => &value,
