@@ -133,28 +133,28 @@ where
 
   // (2) 効率が悪い実装。
   // cloneするかどうかは呼び出し側で決める。できるだけ遅延させよう。
-  pub fn to_value_clone(&self) -> T {
-    match self {
-      &RefNode::Leaf { value } => value.clone(),
-      &RefNode::Branch { value, .. } => value.clone(),
-    }
-  }
+  // pub fn to_value_clone(&self) -> T {
+  //   match self {
+  //     &RefNode::Leaf { value } => value.clone(),
+  //     &RefNode::Branch { value, .. } => value.clone(),
+  //   }
+  // }
 
   // (3) 無駄なself消費,cloneも遅延すべき
-  pub fn to_value_move1(self) -> T {
-    match self {
-      RefNode::Leaf { value } => value.clone(),
-      RefNode::Branch { value, .. } => value.clone(),
-    }
-  }
+  // pub fn to_value_move1(self) -> T {
+  //   match self {
+  //     RefNode::Leaf { value } => value.clone(),
+  //     RefNode::Branch { value, .. } => value.clone(),
+  //   }
+  // }
 
   // (4) 実体版と違ってコンパイル可能だが、無駄なself消費。
-  pub fn as_value_move2(self) -> &'a T {
-    match self {
-      RefNode::Leaf { value } => value,
-      RefNode::Branch { value, .. } => value,
-    }
-  }
+  // pub fn as_value_move2(self) -> &'a T {
+  //   match self {
+  //     RefNode::Leaf { value } => value,
+  //     RefNode::Branch { value, .. } => value,
+  //   }
+  // }
 
   pub fn size(&self) -> usize {
     match self {

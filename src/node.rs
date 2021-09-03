@@ -136,22 +136,22 @@ where
 
   // (2) 効率が悪い実装。
   // cloneするかどうかは呼び出し側で決める。できるだけ遅延させよう。
-  pub fn to_value_clone(&self) -> T {
-    match self {
-      Node::Leaf { value } => value.clone(),
-      Node::Branch { value, .. } => value.clone(),
-    }
-  }
+  // pub fn to_value_clone(&self) -> T {
+  //   match self {
+  //     Node::Leaf { value } => value.clone(),
+  //     Node::Branch { value, .. } => value.clone(),
+  //   }
+  // }
 
   // (3) 複製コストがないが、selfの所有権を奪っているのでこの関数の終了と共に破棄される。
   // つまり、Tだけで取り出して、他の属性を捨てることになる。
   // valueを読んだあと他の属性が読めなくなるのは使い勝手が悪い
-  pub fn to_value_move1(self) -> T {
-    match self {
-      Node::Leaf { value } => value,
-      Node::Branch { value, .. } => value,
-    }
-  }
+  // pub fn to_value_move1(self) -> T {
+  //   match self {
+  //     Node::Leaf { value } => value,
+  //     Node::Branch { value, .. } => value,
+  //   }
+  // }
 
   // (4) 現状の仕様では、コンパイルできない実装
   // pub fn as_value_move2(self) -> &T {
