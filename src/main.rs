@@ -122,7 +122,24 @@ where
     }
   }
 
-  pub fn value(&self) -> &T {
+  // 効率が悪い実装。cloneはできるだけ遅延させるべき
+  pub fn to_value_clone(&self) -> T {
+    match self {
+      Node::Leaf { value } => value.clone(),
+      Node::Branch { value, .. } => value.clone(),
+    }
+  }
+
+  // 複製コストがないが他の属性がこの操作以後は読めなくなる…。
+  pub fn to_value_move(self) -> T {
+    match self {
+      Node::Leaf { value } => value,
+      Node::Branch { value, .. } => value,
+    }
+  }
+
+  // 通常はこれでよい。実体が欲しいなら呼び出し先がcloneを呼び出す
+  pub fn as_value(&self) -> &T {
     match self {
       Node::Leaf { value } => value,
       Node::Branch { value, .. } => value,
@@ -136,17 +153,17 @@ where
     }
   }
 
-  pub fn max(&self) -> &T {
+  pub fn as_max(&self) -> &T {
     match self {
       Node::Leaf { value } => value,
-      Node::Branch { right, .. } => right.max(),
+      Node::Branch { right, .. } => right.as_max(),
     }
   }
 
-  pub fn min(&self) -> &T {
+  pub fn as_min(&self) -> &T {
     match self {
       Node::Leaf { value } => value,
-      Node::Branch { left, .. } => left.min(),
+      Node::Branch { left, .. } => left.as_min(),
     }
   }
 }
@@ -157,7 +174,7 @@ fn main() {
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
   println!("find(6) = {:?}", node.find(6).unwrap());
-  println!("max = {}", node.max());
-  println!("max = {}", node.max());
-  println!("min = {}", node.min());
+  println!("max = {}", node.as_max());
+  println!("max = {}", node.as_max());
+  println!("min = {}", node.as_min());
 }
