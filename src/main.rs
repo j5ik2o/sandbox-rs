@@ -146,6 +146,7 @@ where
     }
   }
 
+  // 現状の仕様では、コンパイルできない実装
   // pub fn to_value_move2(self) -> &T {
   //   match self {
   //     Node::Leaf { value } => &value,
