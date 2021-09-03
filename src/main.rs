@@ -1,5 +1,7 @@
 use std::sync::Arc;
 use std::hash::{Hash, Hasher};
+use std::fmt::Formatter;
+use std::ops::Deref;
 
 #[derive(Debug, Clone)]
 pub enum Node<T> {
@@ -122,7 +124,8 @@ where
     }
   }
 
-  // 通常はこれでよい。実体が欲しいなら呼び出し先がcloneを呼び出す
+  // 値を読みたいだけなら通常はこれでよい。
+  // 実体が欲しいなら呼び出し先が必要に応じてcloneを呼び出す
   pub fn as_value(&self) -> &T {
     match self {
       Node::Leaf { value } => value,
@@ -185,13 +188,24 @@ help: consider using the `'a` lifetime
   }
 }
 
+#[derive(Clone, Debug, PartialOrd, PartialEq)]
+pub struct Value(i32);
+
+impl std::fmt::Display for Value {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", self.0)
+  }
+}
+
 fn main() {
-  let values = (1..=15).into_iter().collect::<Vec<_>>();
+
+  let values = (1..=15).into_iter().map(|e| Value(e)).collect::<Vec<_>>();
   let node = Node::from_vec(values);
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
-  println!("find(6) = {:?}", node.find(6).unwrap());
-  println!("max = {}", node.as_max());
-  println!("max = {}", node.as_max());
+  println!("find(6) = {:?}", node.find(Value(6)).unwrap());
   println!("min = {}", node.as_min());
+  // 実体が欲しい場合は呼び出し側が必要に応じてclone()する。
+  let max = node.as_max().clone();
+  println!("max = {}", max);
 }
