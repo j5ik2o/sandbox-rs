@@ -122,6 +122,14 @@ where
     }
   }
 
+  // 通常はこれでよい。実体が欲しいなら呼び出し先がcloneを呼び出す
+  pub fn as_value(&self) -> &T {
+    match self {
+      Node::Leaf { value } => value,
+      Node::Branch { value, .. } => value,
+    }
+  }
+
   // 効率が悪い実装。cloneはできるだけ遅延させるべき
   pub fn to_value_clone(&self) -> T {
     match self {
@@ -131,20 +139,28 @@ where
   }
 
   // 複製コストがないが他の属性がこの操作以後は読めなくなる…。
-  pub fn to_value_move(self) -> T {
+  pub fn to_value_move1(self) -> T {
     match self {
       Node::Leaf { value } => value,
       Node::Branch { value, .. } => value,
     }
   }
 
-  // 通常はこれでよい。実体が欲しいなら呼び出し先がcloneを呼び出す
-  pub fn as_value(&self) -> &T {
-    match self {
-      Node::Leaf { value } => value,
-      Node::Branch { value, .. } => value,
-    }
-  }
+  // pub fn to_value_move2(self) -> &T {
+  //   match self {
+  //     Node::Leaf { value } => &value,
+  //     Node::Branch { value, .. } => &value,
+  //   }
+  // }
+  /*
+ 149 |   pub fn to_value_move2(self) -> &T {
+    |                                  ^ expected named lifetime parameter
+    |
+    = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+help: consider using the `'a` lifetime
+    |
+149 |   pub fn to_value_move2(self) -> &'a T {
+   */
 
   pub fn size(&self) -> usize {
     match self {
