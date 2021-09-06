@@ -69,11 +69,7 @@ where
       let len = values.len() / 2;
       let (left, right) = values.split_at(len);
       let (head, tail) = right.split_first().unwrap();
-      Self::of_branch(
-        Self::from_vec(left),
-        head.clone(),
-        Self::from_vec(tail),
-      )
+      Self::of_branch(Self::from_vec(left), head.clone(), Self::from_vec(tail))
     }
   }
 

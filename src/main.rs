@@ -3,8 +3,11 @@ use std::fmt::Formatter;
 use crate::node::Node;
 use crate::ref_node::RefNode;
 
+mod currency;
+mod money;
 mod node;
 mod ref_node;
+mod thread;
 
 #[derive(Clone, Debug, PartialOrd, PartialEq)]
 pub struct Value(i32);
