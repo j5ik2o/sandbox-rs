@@ -2,8 +2,9 @@ use std::fmt::Formatter;
 
 use crate::node::Node;
 use crate::ref_node::RefNode;
+use crate::address_book::AddressBook;
 
-mod address_book;
+pub mod address_book;
 mod currency;
 mod money;
 mod node;

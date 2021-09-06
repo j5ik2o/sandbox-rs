@@ -60,18 +60,31 @@ impl AddressEntry {
 
 #[derive(Debug, Clone)]
 pub struct AddressBook {
+  name: String,
   entries: Vec<AddressEntry>,
 }
 
 impl Default for AddressBook {
   fn default() -> Self {
-    AddressBook {
+    Self {
+      name: String::default(),
       entries: Vec::default(),
     }
   }
 }
 
 impl AddressBook {
+  pub fn new(name: &str) -> Self {
+    Self {
+      name: name.to_owned(),
+      entries: Vec::default(),
+    }
+  }
+
+  pub fn name(&self) -> &str {
+    &self.name
+  }
+
   pub fn add_entry(&mut self, address_entry: AddressEntry) {
     self.entries.push(address_entry);
   }
@@ -113,12 +126,32 @@ mod test {
 
   #[test]
   fn test_address_book() {
+    let address_book1 = AddressBook {
+      name: "".to_owned(),
+      entries: Vec::default(),
+    };
+
+    let mut address_book = AddressBook::default();
+
     let address_entry_id = AddressEntryId::new(1);
     let personal_name = PersonName::new("Junichi", "Kato");
-    let address = Address::new("111-0001", "Tokyo-to", "minato-ku", Some("hoge building"));
+    let address = Address::new("111-0001", "Tokyo-to", "minato-ku 1", Some("hoge 1 building"));
     let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
-    let mut address_book = AddressBook::default();
     address_book.add_entry(address_entry);
-    println!("{:?}", address_book);
+
+    let address_entry_id = AddressEntryId::new(2);
+    let personal_name = PersonName::new("Taro", "Yamamoto");
+    let address = Address::new("111-0002", "Tokyo-to", "minato-ku 2", Some("hoge 2 building"));
+    let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
+    address_book.add_entry(address_entry);
+
+    let address_entry_id = AddressEntryId::new(3);
+    let personal_name = PersonName::new("Hanako", "Yamada");
+    let address = Address::new("111-0003", "Tokyo-to", "minato-ku 3", Some("hoge 3 building"));
+    let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
+    address_book.add_entry(address_entry);
+
+    address_book.iter().for_each(|e| println!("{:?}", e));
+
   }
 }
