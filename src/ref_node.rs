@@ -1,6 +1,5 @@
 use std::sync::Arc;
 use std::hash::{Hash, Hasher};
-use std::fmt::Formatter;
 
 #[derive(Debug, Clone)]
 pub enum RefNode<'a, T> {

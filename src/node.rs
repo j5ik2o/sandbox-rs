@@ -1,8 +1,5 @@
 use std::sync::Arc;
 use std::hash::{Hash, Hasher};
-use std::fmt::Formatter;
-use std::ops::Deref;
-use crate::ref_node::RefNode;
 
 #[derive(Debug, Clone)]
 pub enum Node<T> {
