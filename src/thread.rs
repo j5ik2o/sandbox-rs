@@ -123,8 +123,8 @@ impl Thread {
   }
 
   pub fn add_messages(&mut self, messages: &[Message]) -> Result<()> {
-    for message in messages {
-      let result = self.add_message(message.clone());
+    for message in messages.to_vec() {
+      let result = self.add_message(message);
       if result.is_err() {
         return result;
       }
