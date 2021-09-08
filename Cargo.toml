@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 bigdecimal = "0.1.0"
 anyhow = "1"
+tailcall = "0.1.5"

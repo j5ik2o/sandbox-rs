@@ -1,5 +1,8 @@
 use std::fmt::Formatter;
 
+#[macro_use]
+extern crate tailcall;
+
 use crate::node::Node;
 use crate::ref_node::RefNode;
 use crate::address_book::AddressBook;
@@ -21,7 +24,18 @@ impl std::fmt::Display for Value {
   }
 }
 
+#[tailcall]
+fn gcd(a: u64, b: u64) -> u64 {
+  if b == 0 {
+    a
+  } else {
+    gcd(b, a % b)
+  }
+}
+
 fn main() {
+  let a = gcd(1, 100);
+  println!("{}", a);
   let values = (1..=15).into_iter().map(|e| Value(e)).collect::<Vec<_>>();
   let node = Node::from_vec(&values);
   println!("node = {:?}", node);
