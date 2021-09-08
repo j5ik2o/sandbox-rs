@@ -96,6 +96,12 @@ impl AddressBook {
       .for_each(|e| self.add_entry(e))
   }
 
+  pub fn add_entries1(&mut self, address_entries: impl IntoIterator<Item=AddressEntry>) {
+    address_entries
+        .into_iter()
+        .for_each(|e| self.add_entry(e))
+  }
+
   pub fn remove_entry(&mut self, address_entry_id: AddressEntryId) -> AddressEntry {
     let index = self
       .entries
@@ -135,23 +141,55 @@ mod test {
 
     let address_entry_id = AddressEntryId::new(1);
     let personal_name = PersonName::new("Junichi", "Kato");
-    let address = Address::new("111-0001", "Tokyo-to", "minato-ku 1", Some("hoge 1 building"));
+    let address = Address::new(
+      "111-0001",
+      "Tokyo-to",
+      "minato-ku 1",
+      Some("hoge 1 building"),
+    );
     let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
     address_book.add_entry(address_entry);
 
     let address_entry_id = AddressEntryId::new(2);
     let personal_name = PersonName::new("Taro", "Yamamoto");
-    let address = Address::new("111-0002", "Tokyo-to", "minato-ku 2", Some("hoge 2 building"));
+    let address = Address::new(
+      "111-0002",
+      "Tokyo-to",
+      "minato-ku 2",
+      Some("hoge 2 building"),
+    );
     let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
     address_book.add_entry(address_entry);
 
     let address_entry_id = AddressEntryId::new(3);
     let personal_name = PersonName::new("Hanako", "Yamada");
-    let address = Address::new("111-0003", "Tokyo-to", "minato-ku 3", Some("hoge 3 building"));
+    let address = Address::new(
+      "111-0003",
+      "Tokyo-to",
+      "minato-ku 3",
+      Some("hoge 3 building"),
+    );
     let address_entry = AddressEntry::new(address_entry_id, personal_name, address);
     address_book.add_entry(address_entry);
 
     address_book.iter().for_each(|e| println!("{:?}", e));
+
+    let address_entry1 = AddressEntry::new( AddressEntryId::new(4), PersonName::new("Hanako", "Yamada"),  Address::new(
+      "111-0003",
+      "Tokyo-to",
+      "minato-ku 3",
+      Some("hoge 3 building"),
+    ));
+    let address_entry2 = AddressEntry::new( AddressEntryId::new(4), PersonName::new("Hanako", "Yamada"),  Address::new(
+      "111-0003",
+      "Tokyo-to",
+      "minato-ku 3",
+      Some("hoge 3 building"),
+    ));
+    let entries1= [address_entry1.clone(), address_entry2.clone()];
+    address_book.add_entries1(entries1);
+    let entries2= vec![address_entry1, address_entry2];
+    address_book.add_entries1(entries2);
 
   }
 }

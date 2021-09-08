@@ -10,6 +10,7 @@ mod money;
 mod node;
 mod ref_node;
 mod thread;
+mod user_names;
 
 #[derive(Clone, Debug, PartialOrd, PartialEq)]
 pub struct Value(i32);
