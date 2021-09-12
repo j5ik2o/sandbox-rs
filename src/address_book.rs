@@ -1,7 +1,3 @@
-use anyhow::Result;
-use std::fmt::Formatter;
-use std::slice::Iter;
-
 #[derive(Debug, Clone, PartialEq)]
 pub struct AddressEntryId(pub(crate) u64);
 
@@ -96,10 +92,8 @@ impl AddressBook {
       .for_each(|e| self.add_entry(e))
   }
 
-  pub fn add_entries1(&mut self, address_entries: impl IntoIterator<Item=AddressEntry>) {
-    address_entries
-        .into_iter()
-        .for_each(|e| self.add_entry(e))
+  pub fn add_entries1(&mut self, address_entries: impl IntoIterator<Item = AddressEntry>) {
+    address_entries.into_iter().for_each(|e| self.add_entry(e))
   }
 
   pub fn remove_entry(&mut self, address_entry_id: AddressEntryId) -> AddressEntry {
@@ -132,7 +126,7 @@ mod test {
 
   #[test]
   fn test_address_book() {
-    let address_book1 = AddressBook {
+    let _address_book1 = AddressBook {
       name: "".to_owned(),
       entries: Vec::default(),
     };
@@ -174,22 +168,29 @@ mod test {
 
     address_book.iter().for_each(|e| println!("{:?}", e));
 
-    let address_entry1 = AddressEntry::new( AddressEntryId::new(4), PersonName::new("Hanako", "Yamada"),  Address::new(
-      "111-0003",
-      "Tokyo-to",
-      "minato-ku 3",
-      Some("hoge 3 building"),
-    ));
-    let address_entry2 = AddressEntry::new( AddressEntryId::new(4), PersonName::new("Hanako", "Yamada"),  Address::new(
-      "111-0003",
-      "Tokyo-to",
-      "minato-ku 3",
-      Some("hoge 3 building"),
-    ));
-    let entries1= [address_entry1.clone(), address_entry2.clone()];
+    let address_entry1 = AddressEntry::new(
+      AddressEntryId::new(4),
+      PersonName::new("Hanako", "Yamada"),
+      Address::new(
+        "111-0003",
+        "Tokyo-to",
+        "minato-ku 3",
+        Some("hoge 3 building"),
+      ),
+    );
+    let address_entry2 = AddressEntry::new(
+      AddressEntryId::new(4),
+      PersonName::new("Hanako", "Yamada"),
+      Address::new(
+        "111-0003",
+        "Tokyo-to",
+        "minato-ku 3",
+        Some("hoge 3 building"),
+      ),
+    );
+    let entries1 = [address_entry1.clone(), address_entry2.clone()];
     address_book.add_entries1(entries1);
-    let entries2= vec![address_entry1, address_entry2];
+    let entries2 = vec![address_entry1, address_entry2];
     address_book.add_entries1(entries2);
-
   }
 }

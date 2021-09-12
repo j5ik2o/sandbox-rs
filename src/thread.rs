@@ -116,7 +116,7 @@ impl Thread {
 
   pub fn add_message(&mut self, message: Message) -> Result<()> {
     if !self.is_member_id(&message.sender_id) {
-      return Err(anyhow!("invalid member id: {:?}", message.sender_id))?;
+      return Err(anyhow!("invalid member id: {:?}", message.sender_id));
     }
     self.messages.push(message);
     Ok(())
@@ -164,7 +164,7 @@ impl Thread {
     members
       .iter()
       .enumerate()
-      .filter(|(_, member)| member_ids.contains(&member.id()))
+      .filter(|(_, member)| member_ids.contains(member.id()))
       .map(|(index, _)| index)
       .collect::<Vec<_>>()
   }

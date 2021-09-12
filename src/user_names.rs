@@ -21,7 +21,7 @@ impl UserNames {
 
   pub fn add_user_name1(&mut self, user_name: UserName) {
     println!("{:?}", user_name);
-      println!("{:?}", user_name);
+    println!("{:?}", user_name);
   }
 
   pub fn add_user_name2(mut self, user_name: UserName) {

@@ -14,11 +14,9 @@ use std::fmt::Formatter;
 //   // Calling `.await` on `op` starts executing `say_world`.
 //   op.await;
 // }
-use tokio::net::{TcpListener, TcpStream};
-use tokio::runtime;
-use tokio::runtime::{Runtime, Builder};
 
-use crate::address_book::AddressBook;
+use tokio::runtime::{Builder};
+
 use crate::node::Node;
 use crate::ref_node::RefNode;
 use tokio::time::Duration;
@@ -69,13 +67,13 @@ fn gcd(a: u64, b: u64) -> u64 {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   let rt = Builder::new_multi_thread()
-      .enable_all()
-      .worker_threads(4)
-      .thread_name("my-custom-name")
-      .thread_stack_size(3 * 1024 * 1024)
-      .build()?;
+    .enable_all()
+    .worker_threads(4)
+    .thread_name("my-custom-name")
+    .thread_stack_size(3 * 1024 * 1024)
+    .build()?;
 
-  Ok(rt.block_on(async {
+  rt.block_on(async {
     let h1 = tokio::spawn(async move {
       for i in 1..10 {
         let id = std::thread::current().id();
@@ -87,16 +85,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let h2 = tokio::spawn(async move {
       for i in 1..10 {
         let id = std::thread::current().id();
-        println!("{:?}:2:i = {}",id, i);
+        println!("{:?}:2:i = {}", id, i);
         tokio::time::sleep(Duration::from_secs(1)).await;
       }
     });
     tokio::join!(h1, h2);
-  }))
-
-
+  });
+  Ok(())
 }
-
 
 // #[tokio::main]
 // async fn main() {
@@ -127,7 +123,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn main1() {
   let a = gcd(1, 100);
   println!("{}", a);
-  let values = (1..=15).into_iter().map(|e| Value(e)).collect::<Vec<_>>();
+  let values = (1..=15).into_iter().map(Value).collect::<Vec<_>>();
   let node = Node::from_vec(&values);
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
@@ -137,7 +133,7 @@ fn main1() {
   let max = node.as_max().clone();
   println!("max = {}", max);
 
-  let values = (1..=15).into_iter().map(|e| Value(e)).collect::<Vec<_>>();
+  let values = (1..=15).into_iter().map(Value).collect::<Vec<_>>();
   let node = RefNode::from_vec(&values);
   println!("node = {:?}", node);
   println!("node.size() = {}", node.size());
